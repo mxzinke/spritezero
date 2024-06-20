@@ -2,14 +2,14 @@ var test = require('tap').test,
     fs = require('fs'),
     glob = require('glob'),
     path = require('path'),
+    {Buffer} = require('buffer'),
     queue = require('queue-async'),
     stringify = require('json-stable-stringify'),
-    spritezero = require('../'),
-    mapnik = require('mapnik');
+    spritezero = require('../');
 
 // eslint-disable-next-line no-process-env
 var update = process.env.UPDATE;
-var emptyPNG = new mapnik.Image(1, 1).encodeSync('png');
+var emptyPNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
 
 const fixtures = glob.sync(path.resolve(path.join(__dirname, '/fixture/svg/*.svg'))).map(function(im) {
     return {
@@ -218,7 +218,7 @@ test('generateImage unique with max_size', function(t) {
     spritezero.generateLayoutUnique({ imgs: getFixtures(), pixelRatio: 1, format: false, maxIconSize: 10 }, function(err, layout) {
         t.ok(err);
         t.notOk(layout);
-        t.equal(err.message, 'image created from svg must be 10 pixels or fewer on each side');
+        t.equal(err.message, 'Input image exceeds pixel limit');
         t.end();
     });
 });

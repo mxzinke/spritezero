@@ -1,3 +1,10 @@
+## 9.0.0
+#### 2024-06-20
+* Switched to `sharp` for image processing instead of `mapnik`.
+* Updated package name to `@jutaz/spritezero`.
+  - This is a fork of the original `@mapbox/spritezero` package.
+  - APIs are preserved.
+
 ## 8.0.3
 #### 2023-05-24
 * Preserve `buffer` in `ImageLayout` if `format: true` is passed
