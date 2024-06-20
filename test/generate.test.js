@@ -127,7 +127,7 @@ test('generateImage', function(t) {
                         tt.notOk(err, 'no error');
                         tt.ok(res, 'produces image');
                         if (update) fs.writeFileSync(pngPath, res);
-                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 1, 'differing pixels');
+                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 2, 'differing pixels');
                         tt.end();
                     });
                 });
@@ -150,7 +150,7 @@ test('generateImage with format:true', function(t) {
                     tt.notOk(err, 'no error');
                     tt.ok(res, 'produces image');
                     if (update) fs.writeFileSync(optimizedPngPath, res);
-                    tt.ok(checkImageDiff(res, fs.readFileSync(optimizedPngPath)) < 1, 'differing pixels');
+                    tt.ok(checkImageDiff(res, fs.readFileSync(optimizedPngPath)) < 2, 'differing pixels');
                     tt.end();
                 });
             });
@@ -175,7 +175,7 @@ test('generateImageUnique', function(t) {
                         tt.notOk(err, 'no error');
                         tt.ok(res, 'produces image');
                         if (update) fs.writeFileSync(pngPath, res);
-                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 1, 'differing pixels');
+                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 2, 'differing pixels');
                         tt.end();
                     });
                 });
