@@ -1,12 +1,63 @@
 {
-  "name": "@mapbox/spritezero",
-  "version": "8.0.3",
+  "name": "@jutaz/spritezero",
+  "version": "9.0.0",
   "main": "./index.js",
   "description": "small opinionated sprites",
-  "author": "Tom MacWright",
+  "author": {
+    "name": "Justas Brazauskas",
+    "url": "https://jutaz.com/"
+  },
+  "contributors": [
+    {
+      "name": "Bryan Housel",
+      "url": "http://about.me/bhousel"
+    },
+    {
+      "name": "Tom MacWright",
+      "url": "https://macwright.com/"
+    },
+    {
+      "name": "moham"
+    },
+    {
+      "name": "Vincent Dumont"
+    },
+    {
+      "name": "James Seppi",
+      "url": "https://jseppi.github.io/"
+    },
+    {
+      "name": "Blake Thompson"
+    },
+    {
+      "name": "Konstantin Käfer",
+      "url": "https://kkaefer.com"
+    },
+    {
+      "name": "Scott Andrews"
+    },
+    {
+      "name": "Sam Matthews"
+    },
+    {
+      "name": "Alexander Belokon",
+      "url": "http://alexander.belokon.net/"
+    },
+    {
+      "name": "Young Hahn"
+    },
+    {
+      "name": "Melroy van den Berg",
+      "url": "https://melroy.org/"
+    },
+    {
+      "name": "Alex Patow",
+      "url": "http://www.alexpatow.com/"
+    }
+  ],
   "license": "ISC",
-  "repository": "mapbox/spritezero",
-  "bugs": "https://github.com/mapbox/spritezero/issues",
+  "repository": "jutaz/spritezero",
+  "bugs": "https://github.com/jutaz/spritezero/issues",
   "keywords": [
     "sprite",
     "images",
@@ -16,8 +67,8 @@
   "dependencies": {
     "@mapbox/shelf-pack": "~3.0.0",
     "json-stable-stringify": "^1.0.1",
-    "mapnik": "^4.4.0",
     "queue-async": "^1.2.1",
+    "sharp": "^0.31.3",
     "svg-boundings": "^2.0.3",
     "svgo": "^2.8.0"
   },
@@ -25,10 +76,12 @@
     "documentation": "4.0.0-beta10",
     "eslint": "^3.9.0",
     "glob": "^7.1.0",
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0",
     "tap": "^10.1.0"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=14.15.0"
   },
   "scripts": {
     "docs": "documentation build lib --lint --github --format html --output docs/",

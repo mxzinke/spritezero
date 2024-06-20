@@ -2,14 +2,16 @@ var test = require('tap').test,
     fs = require('fs'),
     glob = require('glob'),
     path = require('path'),
+    {Buffer} = require('buffer'),
     queue = require('queue-async'),
+    pixelmatch = require('pixelmatch'),
+    {PNG} = require('pngjs'),
     stringify = require('json-stable-stringify'),
-    spritezero = require('../'),
-    mapnik = require('mapnik');
+    spritezero = require('../');
 
 // eslint-disable-next-line no-process-env
 var update = process.env.UPDATE;
-var emptyPNG = new mapnik.Image(1, 1).encodeSync('png');
+var emptyPNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
 
 const fixtures = glob.sync(path.resolve(path.join(__dirname, '/fixture/svg/*.svg'))).map(function(im) {
     return {
@@ -22,6 +24,15 @@ function getFixtures() {
     return fixtures.sort(function() {
         return Math.random() - 0.5;
     });
+}
+
+function checkImageDiff(img1Source, img2Source, options = {threshold: 0.1}) {
+    const img1 = PNG.sync.read(img1Source);
+    const img2 = PNG.sync.read(img2Source);
+    const {width, height} = img1;
+    const diff = new PNG({width, height});
+
+    return pixelmatch(img1.data, img2.data, diff.data, width, height, options);
 }
 
 test('generateLayout', function(t) {
@@ -116,7 +127,7 @@ test('generateImage', function(t) {
                         tt.notOk(err, 'no error');
                         tt.ok(res, 'produces image');
                         if (update) fs.writeFileSync(pngPath, res);
-                        tt.ok(Math.abs(res.length - fs.readFileSync(pngPath).length) < 1000);
+                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 50, 'differing pixels');
                         tt.end();
                     });
                 });
@@ -139,7 +150,7 @@ test('generateImage with format:true', function(t) {
                     tt.notOk(err, 'no error');
                     tt.ok(res, 'produces image');
                     if (update) fs.writeFileSync(optimizedPngPath, res);
-                    tt.ok(Math.abs(res.length - fs.readFileSync(optimizedPngPath).length) < 1000);
+                    tt.ok(checkImageDiff(res, fs.readFileSync(optimizedPngPath)) < 50, 'differing pixels');
                     tt.end();
                 });
             });
@@ -164,7 +175,7 @@ test('generateImageUnique', function(t) {
                         tt.notOk(err, 'no error');
                         tt.ok(res, 'produces image');
                         if (update) fs.writeFileSync(pngPath, res);
-                        tt.ok(Math.abs(res.length - fs.readFileSync(pngPath).length) < 1000);
+                        tt.ok(checkImageDiff(res, fs.readFileSync(pngPath)) < 50, 'differing pixels');
                         tt.end();
                     });
                 });
@@ -218,7 +229,7 @@ test('generateImage unique with max_size', function(t) {
     spritezero.generateLayoutUnique({ imgs: getFixtures(), pixelRatio: 1, format: false, maxIconSize: 10 }, function(err, layout) {
         t.ok(err);
         t.notOk(layout);
-        t.equal(err.message, 'image created from svg must be 10 pixels or fewer on each side');
+        t.equal(err.message, 'Input image exceeds pixel limit');
         t.end();
     });
 });
